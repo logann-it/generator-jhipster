@@ -22,13 +22,14 @@ import java.io.Serializable;
  * Persistent tokens are used by Spring Security to automatically log in users.
  *
  * @see <%=packageName%>.security.CustomPersistentRememberMeServices
- */
-<% if (databaseType == 'sql') { %>@Entity
-@Table(name = "T_PERSISTENT_TOKEN")<% } %><% if (hibernateCache != 'no' && databaseType == 'sql') { %>
+ */<% if (databaseType == 'sql') { %>
+@Entity<% } %><% if (hibernateCache != 'no' && databaseType == 'sql') { %>
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)<% } %><% if (databaseType == 'nosql') { %>
-@Document(collection = "T_PERSISTENT_TOKEN")<% } %>
+@Document<% } %>
 public class PersistentToken implements Serializable {
 
+	private static final long serialVersionUID = <%= Math.floor(Math.random() * 0x10000000000000) %>L;
+    
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("d MMMM yyyy");
 
     private static final int MAX_USER_AGENT_LEN = 255;
@@ -37,25 +38,20 @@ public class PersistentToken implements Serializable {
     private String series;
 
     @JsonIgnore
-    @NotNull<% if (databaseType == 'sql') { %>
-    @Column(name = "token_value", nullable = false)<% } %>
+    @NotNull
     private String tokenValue;
 
-    @JsonIgnore<% if (databaseType == 'sql') { %>
-    @Column(name = "token_date")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")<% } %>
+    @JsonIgnore
     private LocalDate tokenDate;
 
     //an IPV6 address max length is 39 characters
-    @Size(min = 0, max = 39)<% if (databaseType == 'sql') { %>
-    @Column(name = "ip_address", length = 39)<% } %>
+    @Size(min = 0, max = 39
     private String ipAddress;
 
-    <% if (databaseType == 'sql') { %>@Column(name = "user_agent")<% } %>
     private String userAgent;
 
-    @JsonIgnore
-    <% if (databaseType == 'sql') { %>@ManyToOne<% } %><% if (databaseType == 'nosql') { %>
+    @JsonIgnore<% if (databaseType == 'sql') { %>
+    @ManyToOne<% } %><% if (databaseType == 'nosql') { %>
     @DBRef<% } %>
     private User user;
 
@@ -118,20 +114,7 @@ public class PersistentToken implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        PersistentToken that = (PersistentToken) o;
-
-        if (!series.equals(that.series)) {
-            return false;
-        }
-
-        return true;
+        return o instanceof PersistentToken && Objects.equals(series, ((PersistentToken) o).series));
     }
 
     @Override
@@ -141,12 +124,6 @@ public class PersistentToken implements Serializable {
 
     @Override
     public String toString() {
-        return "PersistentToken{" +
-                "series='" + series + '\'' +
-                ", tokenValue='" + tokenValue + '\'' +
-                ", tokenDate=" + tokenDate +
-                ", ipAddress='" + ipAddress + '\'' +
-                ", userAgent='" + userAgent + '\'' +
-                "}";
+        return "PersistentToken " + series;
     }
 }

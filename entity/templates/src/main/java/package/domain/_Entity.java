@@ -21,19 +21,19 @@ import java.util.Set;<% } %>
 
 /**
  * A <%= entityClass %>.
- */
-<% if (databaseType == 'sql') { %>@Entity
-@Table(name = "T_<%= name.toUpperCase() %>")<% } %><% if (hibernateCache != 'no' && databaseType == 'sql') { %>
+ */<% if (databaseType == 'sql') { %>
+@Entity<% } %><% if (databaseType == 'sql' && hibernateCache != 'no') { %>
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)<% } %><% if (databaseType == 'nosql') { %>
-@Document(collection = "T_<%= name.toUpperCase() %>")<% } %>
-public class <%= entityClass %> implements Serializable {
+@Document<% } %>
+public class <%= entityClass %> extends AbstractAuditingEntity {
+	
+	private static final long serialVersionUID = <%= Math.floor(Math.random() * 0x10000000000000) %>L;
+	
+    @Size(min = 1, max = 50)
+    private String sampleTextAttribute;
 
-    @Id<% if (databaseType == 'sql') { %>
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long id;<% } %><% if (databaseType == 'nosql') { %>
-    private String id;<% } %>
-<% for (fieldId in fields) { %><% if (databaseType == 'sql') { %><% if (fields[fieldId].fieldType == 'LocalDate') { %>
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    @NotNull<% if (databaseType == 'sql') { %>
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")<% } %>
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = CustomLocalDateSerializer.class)
     @Column(name = "<%=fields[fieldId].fieldNameUnderscored %>", nullable = false)<% } else if (fields[fieldId].fieldType == 'BigDecimal') { %>
@@ -51,16 +51,8 @@ public class <%= entityClass %> implements Serializable {
     @ManyToOne
     private <%= relationships[relationshipId].otherEntityNameCapitalized %> <%= relationships[relationshipId].otherEntityName %>;<% } %>
 <% } %>
-    public <% if (databaseType == 'sql') { %>Long<% } %><% if (databaseType == 'nosql') { %>String<% } %> getId() {
-        return id;
-    }
-
-    public void setId(<% if (databaseType == 'sql') { %>Long<% } %><% if (databaseType == 'nosql') { %>String<% } %> id) {
-        this.id = id;
-    }
-<% for (fieldId in fields) { %>
-    public <%= fields[fieldId].fieldType %> get<%= fields[fieldId].fieldNameCapitalized %>() {
-        return <%= fields[fieldId].fieldName %>;
+    public String getSampleTextAttribute() {
+        return sampleTextAttribute;
     }
 
     public void set<%= fields[fieldId].fieldNameCapitalized %>(<%= fields[fieldId].fieldType %> <%= fields[fieldId].fieldName %>) {
@@ -91,23 +83,11 @@ public class <%= entityClass %> implements Serializable {
             return false;
         }
 
-        <%= entityClass %> <%= entityInstance %> = (<%= entityClass %>) o;
-
-        if (id != null ? !id.equals(<%= entityInstance %>.id) : <%= entityInstance %>.id != null) return false;
-
-        return true;
+    public LocalDate getSampleDateAttribute() {
+        return sampleDateAttribute;
     }
 
-    @Override
-    public int hashCode() {
-        return <% if (databaseType == 'sql') { %>(int) (id ^ (id >>> 32));<% } %><% if (databaseType == 'nosql') { %>id != null ? id.hashCode() : 0;<% } %>
-    }
-
-    @Override
-    public String toString() {
-        return "<%= entityClass %>{" +
-                "id=" + id +<% for (fieldId in fields) { %>
-                ", <%= fields[fieldId].fieldName %>='" + <%= fields[fieldId].fieldName %> + "'" +<% } %>
-                '}';
+    public void setSampleDateAttribute(LocalDate sampleDateAttribute) {
+        this.sampleDateAttribute = sampleDateAttribute;
     }
 }
