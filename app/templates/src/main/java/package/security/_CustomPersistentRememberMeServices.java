@@ -1,9 +1,9 @@
 package <%=packageName%>.security;
 
-import <%=packageName%>.domain.PersistentToken;
-import <%=packageName%>.domain.User;
-import <%=packageName%>.repository.PersistentTokenRepository;
-import <%=packageName%>.repository.UserRepository;
+import <%=packageName%>.domain.security.PersistentToken;
+import <%=packageName%>.domain.security.User;
+import <%=packageName%>.repository.security.PersistentTokenRepository;
+import <%=packageName%>.repository.security.UserRepository;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

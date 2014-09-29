@@ -1,10 +1,9 @@
-package <%=packageName%>.domain;
-<% if (hibernateCache != 'no' && databaseType == 'sql') { %>
-import org.hibernate.annotations.Cache;
+package <%=packageName%>.domain.security;
+
+<% if (hibernateCache != 'no' && databaseType == 'sql') { %>import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;<% } %><% if (databaseType == 'nosql') { %>
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;<% } %>
-<% if (databaseType == 'sql') { %>
+import org.springframework.data.mongodb.core.mapping.Document;<% } %><% if (databaseType == 'sql') { %>
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,16 +14,17 @@ import java.io.Serializable;
 
 /**
  * An authority (a security role) used by Spring Security.
- */<% if (databaseType == 'sql') { %>
-@Entity<% if (hibernateCache != 'no') { %>
+ */
+<% if (databaseType == 'sql') { %>@Entity
+@Table(name = "T_AUTHORITY")<% if (hibernateCache != 'no') { %>
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)<% } %><% } %><% if (databaseType == 'nosql') { %>
-@Document<% } %>
-public class Authority extends AbstractAuditingEntity {
+@Document(collection = "T_AUTHORITY")<% } %>
+public class Authority implements Serializable {
 
-	private static final long serialVersionUID = <%= Math.floor(Math.random() * 0x10000000000000) %>L;
-
-	@NotNull
+    @NotNull
     @Size(min = 0, max = 50)
+    @Id<% if (databaseType == 'sql') { %>
+    @Column(length = 50)<% } %>
     private String name;
 
     public String getName() {
@@ -33,5 +33,35 @@ public class Authority extends AbstractAuditingEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Authority authority = (Authority) o;
+
+        if (name != null ? !name.equals(authority.name) : authority.name != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Authority{" +
+                "name='" + name + '\'' +
+                "}";
     }
 }

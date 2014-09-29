@@ -1,6 +1,6 @@
-package <%=packageName%>.repository;
+package <%=packageName%>.repository.security;
 
-import <%=packageName%>.domain.User;
+import <%=packageName%>.domain.security.User;
 import org.joda.time.DateTime;<% if (databaseType == 'sql') { %>
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;<% } %><% if (databaseType == 'nosql') { %>

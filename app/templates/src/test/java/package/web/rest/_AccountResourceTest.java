@@ -2,9 +2,9 @@ package <%=packageName%>.web.rest;
 
 import <%=packageName%>.Application;<% if (databaseType == 'nosql') { %>
 import <%=packageName%>.config.MongoConfiguration;<% } %>
-import <%=packageName%>.domain.Authority;
-import <%=packageName%>.domain.User;
-import <%=packageName%>.repository.UserRepository;
+import <%=packageName%>.domain.security.Authority;
+import <%=packageName%>.domain.security.User;
+import <%=packageName%>.repository.security.UserRepository;
 import <%=packageName%>.security.AuthoritiesConstants;
 import <%=packageName%>.service.UserService;
 import org.junit.Before;

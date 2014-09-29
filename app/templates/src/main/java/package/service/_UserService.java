@@ -1,11 +1,11 @@
 package <%=packageName%>.service;
 
-import <%=packageName%>.domain.Authority;
-import <%=packageName%>.domain.PersistentToken;
-import <%=packageName%>.domain.User;
-import <%=packageName%>.repository.AuthorityRepository;
-import <%=packageName%>.repository.PersistentTokenRepository;
-import <%=packageName%>.repository.UserRepository;
+import <%=packageName%>.domain.security.Authority;
+import <%=packageName%>.domain.security.PersistentToken;
+import <%=packageName%>.domain.security.User;
+import <%=packageName%>.repository.security.AuthorityRepository;
+import <%=packageName%>.repository.security.PersistentTokenRepository;
+import <%=packageName%>.repository.security.UserRepository;
 import <%=packageName%>.security.SecurityUtils;
 import <%=packageName%>.service.util.RandomUtil;
 import org.joda.time.DateTime;

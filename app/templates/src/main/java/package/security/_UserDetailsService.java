@@ -1,8 +1,8 @@
 package <%=packageName%>.security;
 
-import <%=packageName%>.domain.Authority;
-import <%=packageName%>.domain.User;
-import <%=packageName%>.repository.UserRepository;
+import <%=packageName%>.domain.security.Authority;
+import <%=packageName%>.domain.security.User;
+import <%=packageName%>.repository.security.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;

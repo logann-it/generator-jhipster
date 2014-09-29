@@ -519,19 +519,19 @@ JhipsterGenerator.prototype.app = function app() {
 
     this.template('src/main/java/package/domain/_package-info.java', javaDir + 'domain/package-info.java');
     this.template('src/main/java/package/domain/_AbstractAuditingEntity.java', javaDir + 'domain/AbstractAuditingEntity.java');
-    this.template('src/main/java/package/domain/_AbstractEntity.java', javaDir + 'domain/AbstractEntity.java');    
-    this.template('src/main/java/package/domain/_Authority.java', javaDir + 'domain/Authority.java');
+    this.template('src/main/java/package/domain/_AbstractEntity.java', javaDir + 'domain/AbstractEntity.java');
     this.template('src/main/java/package/domain/_PersistentAuditEvent.java', javaDir + 'domain/PersistentAuditEvent.java');
-    this.template('src/main/java/package/domain/_PersistentToken.java', javaDir + 'domain/PersistentToken.java');
-    this.template('src/main/java/package/domain/_User.java', javaDir + 'domain/User.java');
+    this.template('src/main/java/package/domain/security/_Authority.java', javaDir + 'domain/security/Authority.java');
+    this.template('src/main/java/package/domain/security/_PersistentToken.java', javaDir + 'domain/security/PersistentToken.java');
+    this.template('src/main/java/package/domain/security/_User.java', javaDir + 'domain/security/User.java');
     this.template('src/main/java/package/domain/util/_CustomLocalDateSerializer.java', javaDir + 'domain/util/CustomLocalDateSerializer.java');
 
     this.template('src/main/java/package/repository/_package-info.java', javaDir + 'repository/package-info.java');
-    this.template('src/main/java/package/repository/_AuthorityRepository.java', javaDir + 'repository/AuthorityRepository.java');
+    this.template('src/main/java/package/repository/security/_AuthorityRepository.java', javaDir + 'repository/security/AuthorityRepository.java');
     this.template('src/main/java/package/repository/_CustomAuditEventRepository.java', javaDir + 'repository/CustomAuditEventRepository.java');
 
-    this.template('src/main/java/package/repository/_UserRepository.java', javaDir + 'repository/UserRepository.java');
-    this.template('src/main/java/package/repository/_PersistentTokenRepository.java', javaDir + 'repository/PersistentTokenRepository.java');
+    this.template('src/main/java/package/repository/security/_UserRepository.java', javaDir + 'repository/security/UserRepository.java');
+    this.template('src/main/java/package/repository/security/_PersistentTokenRepository.java', javaDir + 'repository/security/PersistentTokenRepository.java');
     this.template('src/main/java/package/repository/_PersistenceAuditEventRepository.java', javaDir + 'repository/PersistenceAuditEventRepository.java');
 
     this.template('src/main/java/package/security/_package-info.java', javaDir + 'security/package-info.java');
@@ -573,7 +573,7 @@ JhipsterGenerator.prototype.app = function app() {
     this.template('src/main/java/package/web/rest/_AccountResource.java', javaDir + 'web/rest/AccountResource.java');
     this.template('src/main/java/package/web/rest/_AuditResource.java', javaDir + 'web/rest/AuditResource.java');
     this.template('src/main/java/package/web/rest/_LogsResource.java', javaDir + 'web/rest/LogsResource.java');
-    this.template('src/main/java/package/web/rest/_UserResource.java', javaDir + 'web/rest/UserResource.java');
+    this.template('src/main/java/package/web/rest/security/_UserResource.java', javaDir + 'web/rest/security/UserResource.java');
 
     if (this.websocket == 'atmosphere') {
         this.template('src/main/java/package/web/websocket/_package-info.java', javaDir + 'web/websocket/package-info.java');
@@ -596,7 +596,7 @@ JhipsterGenerator.prototype.app = function app() {
     this.template('src/test/java/package/service/_UserServiceTest.java', testDir + 'service/UserServiceTest.java');
     this.template('src/test/java/package/web/rest/_AccountResourceTest.java', testDir + 'web/rest/AccountResourceTest.java');
     this.template('src/test/java/package/web/rest/_TestUtil.java', testDir + 'web/rest/TestUtil.java');
-    this.template('src/test/java/package/web/rest/_UserResourceTest.java', testDir + 'web/rest/UserResourceTest.java');
+    this.template('src/test/java/package/web/rest/security/_UserResourceTest.java', testDir + 'web/rest/security/UserResourceTest.java');
 
     this.template(testResourceDir + 'config/_application.yml', testResourceDir + 'config/application.yml');
     this.template(testResourceDir + '_logback-test.xml', testResourceDir + 'logback-test.xml');

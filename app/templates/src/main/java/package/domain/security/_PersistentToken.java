@@ -1,4 +1,4 @@
-package <%=packageName%>.domain;
+package <%=packageName%>.domain.security;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;<% if (hibernateCache != 'no' && databaseType == 'sql') { %>

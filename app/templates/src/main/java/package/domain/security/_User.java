@@ -1,5 +1,6 @@
-package <%=packageName%>.domain;
+package <%=packageName%>.domain.security;
 
+import <%=packageName%>.domain.AbstractAuditingEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;<% if (hibernateCache != 'no' && databaseType == 'sql') { %>
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;<% } %>
