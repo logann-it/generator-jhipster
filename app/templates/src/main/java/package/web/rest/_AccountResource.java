@@ -35,7 +35,7 @@ import java.util.stream.Collectors;<% } %>
  * REST controller for managing the current user's account.
  */
 @RestController
-@RequestMapping("/app")
+@RequestMapping("/app/rest", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AccountResource {
 
     private final Logger log = LoggerFactory.getLogger(AccountResource.class);
@@ -64,9 +64,7 @@ public class AccountResource {
     /**
      * POST  /rest/register -> register the user.
      */
-    @RequestMapping(value = "/rest/register",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<?> registerAccount(@RequestBody UserDTO userDTO, HttpServletRequest request,
                                              HttpServletResponse response) {<% if (javaVersion == '8') { %>
@@ -95,9 +93,7 @@ public class AccountResource {
     /**
      * GET  /rest/activate -> activate the registered user.
      */
-    @RequestMapping(value = "/rest/activate",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/activate", method = RequestMethod.GET)
     @Timed
     public ResponseEntity<String> activateAccount(@RequestParam(value = "key") String key) {<% if (javaVersion == '8') { %>
         return Optional.ofNullable(userService.activateRegistration(key))
@@ -115,9 +111,7 @@ public class AccountResource {
     /**
      * GET  /rest/authenticate -> check if the user is authenticated, and return its login.
      */
-    @RequestMapping(value = "/rest/authenticate",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/authenticate", method = RequestMethod.GET)
     @Timed
     public String isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");
@@ -127,9 +121,7 @@ public class AccountResource {
     /**
      * GET  /rest/account -> get the current user.
      */
-    @RequestMapping(value = "/rest/account",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/account", method = RequestMethod.GET)
     @Timed
     public ResponseEntity<UserDTO> getAccount() {<% if (javaVersion == '8') { %>
         return Optional.ofNullable(userService.getUserWithAuthorities())
@@ -167,9 +159,7 @@ public class AccountResource {
     /**
      * POST  /rest/account -> update the current user information.
      */
-    @RequestMapping(value = "/rest/account",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/account", method = RequestMethod.POST)
     @Timed
     public void saveAccount(@RequestBody UserDTO userDTO) {
         userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail());
@@ -178,9 +168,7 @@ public class AccountResource {
     /**
      * POST  /rest/change_password -> changes the current user's password
      */
-    @RequestMapping(value = "/rest/account/change_password",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/account/change_password", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<?> changePassword(@RequestBody String password) {
         if (StringUtils.isEmpty(password)) {
@@ -193,9 +181,7 @@ public class AccountResource {
     /**
      * GET  /rest/account/sessions -> get the current open sessions.
      */
-    @RequestMapping(value = "/rest/account/sessions",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/rest/account/sessions", method = RequestMethod.GET)
     @Timed
     public ResponseEntity<List<PersistentToken>> getCurrentSessions() {<% if (javaVersion == '8') { %>
         return Optional.ofNullable(userRepository.findOne(SecurityUtils.getCurrentLogin()))
@@ -225,8 +211,7 @@ public class AccountResource {
      *   There is an API to invalidate the current session, but there is no API to check which session uses which
      *   cookie.
      */
-    @RequestMapping(value = "/rest/account/sessions/{series}",
-            method = RequestMethod.DELETE)
+    @RequestMapping(value = "/account/sessions/{series}", method = RequestMethod.DELETE)
     @Timed
     public void invalidateSession(@PathVariable String series) throws UnsupportedEncodingException {
         String decodedSeries = URLDecoder.decode(series, "UTF-8");

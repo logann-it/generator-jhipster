@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;<% } %>
  * REST controller for managing users.
  */
 @RestController
-@RequestMapping("/app")
+@RequestMapping(value = "/app", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserResource {
 
     private final Logger log = LoggerFactory.getLogger(UserResource.class);
@@ -35,8 +35,7 @@ public class UserResource {
      * GET  /rest/users/:login -> get the "login" user.
      */
     @RequestMapping(value = "/rest/users/{login}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            method = RequestMethod.GET)
     @Timed
     @RolesAllowed(AuthoritiesConstants.ADMIN)<% if (javaVersion == '8') { %>
     ResponseEntity<User> getUser(@PathVariable String login) {

@@ -17,12 +17,10 @@ import java.util.stream.Collectors;<% } %>
  * Controller for view and managing Log Level at runtime.
  */
 @RestController
-@RequestMapping("/app")
+@RequestMapping(value = "/app/rest/logs", produces = MediaType.APPLICATION_JSON_VALUE)
 public class LogsResource {
 
-    @RequestMapping(value = "/rest/logs",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET)
     @Timed
     public List<LoggerDTO> getList() {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();<% if (javaVersion == '8') { %>
@@ -38,8 +36,7 @@ public class LogsResource {
         return loggers;<% } %>
     }
 
-    @RequestMapping(value = "/rest/logs",
-            method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Timed
     public void changeLevel(@RequestBody LoggerDTO jsonLogger) {
