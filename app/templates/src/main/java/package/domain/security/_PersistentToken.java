@@ -16,6 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;<% } %>
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Objects;
 
 
 /**
@@ -45,7 +46,7 @@ public class PersistentToken implements Serializable {
     private LocalDate tokenDate;
 
     //an IPV6 address max length is 39 characters
-    @Size(min = 0, max = 39
+    @Size(min = 0, max = 39)
     private String ipAddress;
 
     private String userAgent;
@@ -114,7 +115,7 @@ public class PersistentToken implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof PersistentToken && Objects.equals(series, ((PersistentToken) o).series));
+        return o instanceof PersistentToken && Objects.equals(series, ((PersistentToken) o).series);
     }
 
     @Override

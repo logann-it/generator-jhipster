@@ -28,20 +28,7 @@ import java.util.Set;<% } %>
 public class <%= entityClass %> extends AbstractAuditingEntity {
 	
 	private static final long serialVersionUID = <%= Math.floor(Math.random() * 0x10000000000000) %>L;
-	
-    @Size(min = 1, max = 50)
-    private String sampleTextAttribute;
-
-    @NotNull<% if (databaseType == 'sql') { %>
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")<% } %>
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = CustomLocalDateSerializer.class)
-    @Column(name = "<%=fields[fieldId].fieldNameUnderscored %>", nullable = false)<% } else if (fields[fieldId].fieldType == 'BigDecimal') { %>
-    @Column(name = "<%=fields[fieldId].fieldNameUnderscored %>", precision=10, scale=2)<% } else { %>
-    @Column(name = "<%=fields[fieldId].fieldNameUnderscored %>")<% }} %><% if (databaseType == 'nosql') { %><% if (fields[fieldId].fieldType == 'LocalDate') { %>
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = CustomLocalDateSerializer.class)<% } %>
-    @Field("<%=fields[fieldId].fieldNameUnderscored %>")<% } %>
+<% for (fieldId in fields) { %>
     private <%= fields[fieldId].fieldType %> <%= fields[fieldId].fieldName %>;
 <% } %><% for (relationshipId in relationships) { %><% if (relationships[relationshipId].relationshipType == 'one-to-many') { %>
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "<%= entityInstance %>")
@@ -50,9 +37,9 @@ public class <%= entityClass %> extends AbstractAuditingEntity {
     private Set<<%= relationships[relationshipId].otherEntityNameCapitalized %>> <%= relationships[relationshipId].otherEntityName %>s = new HashSet<>();<% } else { %>
     @ManyToOne
     private <%= relationships[relationshipId].otherEntityNameCapitalized %> <%= relationships[relationshipId].otherEntityName %>;<% } %>
-<% } %>
-    public String getSampleTextAttribute() {
-        return sampleTextAttribute;
+<% } %><% for (fieldId in fields) { %>
+    public <%= fields[fieldId].fieldType %> get<%= fields[fieldId].fieldNameCapitalized %>() {
+        return <%= fields[fieldId].fieldName %>;
     }
 
     public void set<%= fields[fieldId].fieldNameCapitalized %>(<%= fields[fieldId].fieldType %> <%= fields[fieldId].fieldName %>) {
@@ -74,20 +61,4 @@ public class <%= entityClass %> extends AbstractAuditingEntity {
         this.<%= relationships[relationshipId].otherEntityName %> = <%= relationships[relationshipId].otherEntityName %>;
     }<% } %>
 <% } %>
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-    public LocalDate getSampleDateAttribute() {
-        return sampleDateAttribute;
-    }
-
-    public void setSampleDateAttribute(LocalDate sampleDateAttribute) {
-        this.sampleDateAttribute = sampleDateAttribute;
-    }
 }

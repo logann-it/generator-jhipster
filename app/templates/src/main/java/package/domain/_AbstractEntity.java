@@ -1,4 +1,4 @@
-package br.com.logann.sgf.domain;
+package <%=packageName%>.domain;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
