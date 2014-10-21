@@ -1,6 +1,6 @@
-package <%=packageName%>.repository;
+package <%=packageName%>.repository.security;
 
-import <%=packageName%>.domain.Authority;<% if (databaseType == 'sql') { %>
+import <%=packageName%>.domain.security.Authority;<% if (databaseType == 'sql') { %>
 import org.springframework.data.jpa.repository.JpaRepository;<% } %><% if (databaseType == 'nosql') { %>
 import org.springframework.data.mongodb.repository.MongoRepository;<% } %>
 

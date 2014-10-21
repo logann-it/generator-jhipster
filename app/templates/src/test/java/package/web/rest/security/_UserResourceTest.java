@@ -1,8 +1,8 @@
-package <%=packageName%>.web.rest;
+package <%=packageName%>.web.rest.security;
 
 import <%=packageName%>.Application;<% if (databaseType == 'nosql') { %>
 import <%=packageName%>.config.MongoConfiguration;<% } %>
-import <%=packageName%>.repository.UserRepository;
+import <%=packageName%>.repository.security.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

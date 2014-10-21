@@ -1,8 +1,8 @@
-package <%=packageName%>.web.rest;
+package <%=packageName%>.web.rest.security;
 
 import com.codahale.metrics.annotation.Timed;
-import <%=packageName%>.domain.User;
-import <%=packageName%>.repository.UserRepository;
+import <%=packageName%>.domain.security.User;
+import <%=packageName%>.repository.security.UserRepository;
 import <%=packageName%>.security.AuthoritiesConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;<% if (javaVersion == '8') { %>

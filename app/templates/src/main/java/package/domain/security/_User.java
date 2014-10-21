@@ -1,65 +1,54 @@
-package <%=packageName%>.domain;
+package <%=packageName%>.domain.security;
 
+import <%=packageName%>.domain.AbstractAuditingEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;<% if (hibernateCache != 'no' && databaseType == 'sql') { %>
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;<% } %>
-import org.hibernate.validator.constraints.Email;
-<% if (databaseType == 'nosql') { %>import org.springframework.data.annotation.Id;
+import org.hibernate.validator.constraints.Email;<% if (databaseType == 'nosql') { %>
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-<% } %><% if (databaseType == 'sql') { %>
+import org.springframework.data.mongodb.core.mapping.Field;<% } %>
+<% if (databaseType == 'sql') { %>
 import javax.persistence.*;<% } %>
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * A user.
  */
-<% if (databaseType == 'sql') { %>@Entity
-@Table(name = "T_USER")<% } %><% if (hibernateCache != 'no' && databaseType == 'sql') { %>
+<% if (databaseType == 'sql') { %>@Entity<% } %><% if (hibernateCache != 'no' && databaseType == 'sql') { %>
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)<% } %><% if (databaseType == 'nosql') { %>
-@Document(collection = "T_USER")<% } %>
-public class User extends AbstractAuditingEntity implements Serializable {
+@Document<% } %>
+public class User extends AbstractAuditingEntity {
 
+	private static final long serialVersionUID = <%= Math.floor(Math.random() * 0x10000000000000) %>L;
+	
     @NotNull
-    @Size(min = 0, max = 50)
-    @Id<% if (databaseType == 'sql') { %>
-    @Column(length = 50)<% } %>
+    @Size(min = 2, max = 50)
     private String login;
 
     @JsonIgnore
-    @Size(min = 0, max = 100)<% if (databaseType == 'sql') { %>
-    @Column(length = 100)<% } %>
+    @Size(min = 0, max = 100)
     private String password;
 
-    @Size(min = 0, max = 50)<% if (databaseType == 'sql') { %>
-    @Column(name = "first_name", length = 50)<% } %><% if (databaseType == 'nosql') { %>
-    @Field("first_name")<% } %>
+    @Size(min = 0, max = 50)
     private String firstName;
 
-    @Size(min = 0, max = 50)<% if (databaseType == 'sql') { %>
-    @Column(name = "last_name", length = 50)<% } %><% if (databaseType == 'nosql') { %>
-    @Field("last_name")<% } %>
+    @Size(min = 0, max = 50)
     private String lastName;
 
     @Email
-    @Size(min = 0, max = 100)<% if (databaseType == 'sql') { %>
-    @Column(length = 100)<% } %>
+    @Size(min = 0, max = 100)
     private String email;
 
     private boolean activated = false;
 
-    @Size(min = 2, max = 5)<% if (databaseType == 'sql') { %>
-    @Column(name = "lang_key", length = 5)<% } %><% if (databaseType == 'nosql') { %>
-    @Field("lang_key")<% } %>
+    @Size(min = 2, max = 5)
     private String langKey;
 
-    @Size(min = 0, max = 20)<% if (databaseType == 'sql') { %>
-    @Column(name = "activation_key", length = 20)<% } %><% if (databaseType == 'nosql') { %>
-    @Field("activation_key")<% } %>
+    @Size(min = 0, max = 20)
     private String activationKey;
 
     @JsonIgnore<% if (databaseType == 'sql') { %>
@@ -155,41 +144,4 @@ public class User extends AbstractAuditingEntity implements Serializable {
     public void setPersistentTokens(Set<PersistentToken> persistentTokens) {
         this.persistentTokens = persistentTokens;
     }<% } %>
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        User user = (User) o;
-
-        if (!login.equals(user.login)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return login.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", activated='" + activated + '\'' +
-                ", langKey='" + langKey + '\'' +
-                ", activationKey='" + activationKey + '\'' +
-                "}";
-    }
 }

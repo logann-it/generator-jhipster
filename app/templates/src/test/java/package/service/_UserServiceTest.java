@@ -2,10 +2,10 @@ package <%=packageName%>.service;
 
 import <%=packageName%>.Application;<% if (databaseType == 'nosql') { %>
 import <%=packageName%>.config.MongoConfiguration;<% } %>
-import <%=packageName%>.domain.PersistentToken;
-import <%=packageName%>.domain.User;
-import <%=packageName%>.repository.PersistentTokenRepository;
-import <%=packageName%>.repository.UserRepository;
+import <%=packageName%>.domain.security.PersistentToken;
+import <%=packageName%>.domain.security.User;
+import <%=packageName%>.repository.security.PersistentTokenRepository;
+import <%=packageName%>.repository.security.UserRepository;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package <%=packageName%>.domain;
+package <%=packageName%>.domain.security;
 
 <% if (hibernateCache != 'no' && databaseType == 'sql') { %>import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;<% } %><% if (databaseType == 'nosql') { %>

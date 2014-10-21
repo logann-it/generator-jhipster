@@ -21,27 +21,14 @@ import java.util.Set;<% } %>
 
 /**
  * A <%= entityClass %>.
- */
-<% if (databaseType == 'sql') { %>@Entity
-@Table(name = "T_<%= name.toUpperCase() %>")<% } %><% if (hibernateCache != 'no' && databaseType == 'sql') { %>
+ */<% if (databaseType == 'sql') { %>
+@Entity<% } %><% if (databaseType == 'sql' && hibernateCache != 'no') { %>
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)<% } %><% if (databaseType == 'nosql') { %>
-@Document(collection = "T_<%= name.toUpperCase() %>")<% } %>
-public class <%= entityClass %> implements Serializable {
-
-    @Id<% if (databaseType == 'sql') { %>
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long id;<% } %><% if (databaseType == 'nosql') { %>
-    private String id;<% } %>
-<% for (fieldId in fields) { %><% if (databaseType == 'sql') { %><% if (fields[fieldId].fieldType == 'LocalDate') { %>
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = CustomLocalDateSerializer.class)
-    @Column(name = "<%=fields[fieldId].fieldNameUnderscored %>", nullable = false)<% } else if (fields[fieldId].fieldType == 'BigDecimal') { %>
-    @Column(name = "<%=fields[fieldId].fieldNameUnderscored %>", precision=10, scale=2)<% } else { %>
-    @Column(name = "<%=fields[fieldId].fieldNameUnderscored %>")<% }} %><% if (databaseType == 'nosql') { %><% if (fields[fieldId].fieldType == 'LocalDate') { %>
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = CustomLocalDateSerializer.class)<% } %>
-    @Field("<%=fields[fieldId].fieldNameUnderscored %>")<% } %>
+@Document<% } %>
+public class <%= entityClass %> extends AbstractAuditingEntity {
+	
+	private static final long serialVersionUID = <%= Math.floor(Math.random() * 0x10000000000000) %>L;
+<% for (fieldId in fields) { %>
     private <%= fields[fieldId].fieldType %> <%= fields[fieldId].fieldName %>;
 <% } %><% for (relationshipId in relationships) { %><% if (relationships[relationshipId].relationshipType == 'one-to-many') { %>
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "<%= entityInstance %>")
@@ -50,15 +37,7 @@ public class <%= entityClass %> implements Serializable {
     private Set<<%= relationships[relationshipId].otherEntityNameCapitalized %>> <%= relationships[relationshipId].otherEntityName %>s = new HashSet<>();<% } else { %>
     @ManyToOne
     private <%= relationships[relationshipId].otherEntityNameCapitalized %> <%= relationships[relationshipId].otherEntityName %>;<% } %>
-<% } %>
-    public <% if (databaseType == 'sql') { %>Long<% } %><% if (databaseType == 'nosql') { %>String<% } %> getId() {
-        return id;
-    }
-
-    public void setId(<% if (databaseType == 'sql') { %>Long<% } %><% if (databaseType == 'nosql') { %>String<% } %> id) {
-        this.id = id;
-    }
-<% for (fieldId in fields) { %>
+<% } %><% for (fieldId in fields) { %>
     public <%= fields[fieldId].fieldType %> get<%= fields[fieldId].fieldNameCapitalized %>() {
         return <%= fields[fieldId].fieldName %>;
     }
@@ -82,32 +61,4 @@ public class <%= entityClass %> implements Serializable {
         this.<%= relationships[relationshipId].otherEntityName %> = <%= relationships[relationshipId].otherEntityName %>;
     }<% } %>
 <% } %>
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        <%= entityClass %> <%= entityInstance %> = (<%= entityClass %>) o;
-
-        if (id != null ? !id.equals(<%= entityInstance %>.id) : <%= entityInstance %>.id != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return <% if (databaseType == 'sql') { %>(int) (id ^ (id >>> 32));<% } %><% if (databaseType == 'nosql') { %>id != null ? id.hashCode() : 0;<% } %>
-    }
-
-    @Override
-    public String toString() {
-        return "<%= entityClass %>{" +
-                "id=" + id +<% for (fieldId in fields) { %>
-                ", <%= fields[fieldId].fieldName %>='" + <%= fields[fieldId].fieldName %> + "'" +<% } %>
-                '}';
-    }
 }
