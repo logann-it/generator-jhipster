@@ -4,7 +4,7 @@
   "dependencies": {<% if (websocket == 'atmosphere') { %>
     "atmosphere": "~2.2",
     "jquery-atmosphere": "~2.2",<% } %>
-    "bootstrap-sass": "twbs/bootstrap-sass#~3.1"
+    "bootstrap-sass": "twbs/bootstrap-sass#~3.1",
     "modernizr": "~2.8",
     "jquery": "~2.1",
     "angular": "~1.2",
