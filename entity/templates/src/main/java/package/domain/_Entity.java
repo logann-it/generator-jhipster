@@ -1,14 +1,17 @@
 package <%=packageName%>.domain;
 <% if (relationships.length > 0  && (fieldsContainOwnerManyToMany == false || fieldsContainOneToMany == true)) { %>
-import com.fasterxml.jackson.annotation.JsonIgnore;<% } %><% if (fieldsContainLocalDate == true) { %>
+import com.fasterxml.jackson.annotation.JsonIgnore;<% } %><% if (fieldsContainCustomTime == true) { %>
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;<% } %><% if (fieldsContainLocalDate == true) { %>
 import com.fasterxml.jackson.datatype.joda.deser.LocalDateDeserializer;
-import <%=packageName%>.domain.util.CustomLocalDateSerializer;<% } %><% if (hibernateCache != 'no') { %>
+import <%=packageName%>.domain.util.CustomLocalDateSerializer;<% } %><% if (fieldsContainDateTime == true) { %>
+import <%=packageName%>.domain.util.CustomDateTimeDeserializer;
+import <%=packageName%>.domain.util.CustomDateTimeSerializer;<% } %><% if (hibernateCache != 'no') { %>
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;<% } %><% if (fieldsContainLocalDate == true) { %><% if (databaseType == 'sql') { %>
-import org.hibernate.annotations.Type;<% } %>
-import org.joda.time.LocalDate;<% } %><% if (databaseType == 'nosql') { %>
+import org.hibernate.annotations.CacheConcurrencyStrategy;<% } %><% if (fieldsContainCustomTime == true && databaseType == 'sql') { %>
+import org.hibernate.annotations.Type;<% } %><% if (fieldsContainLocalDate == true) { %>
+import org.joda.time.LocalDate;<% } %><% if (fieldsContainDateTime == true) { %>
+import org.joda.time.DateTime;<% } %><% if (databaseType == 'nosql') { %>
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;<% } %>
